@@ -1,4 +1,4 @@
-package JavaGit;
+package JavaGit.hooks;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -6,10 +6,7 @@ import java.io.InputStream;
 import java.security.MessageDigest;
 import java.util.*;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
-
-import JavaGit.GitObject; //这里假设调用Change类的B方法，输入一个InputStream类型，可以返回string类型的hash值
 
 public class Recursion {
     public static String pathForTempFile = "/Users/yjl/Downloads/tempF"; //设置tree的value时，暂时存储用的文件的路径

@@ -1,4 +1,4 @@
-package JavaGit;
+package JavaGit.hooks;
 
 import java.io.*;
 import java.security.MessageDigest;
