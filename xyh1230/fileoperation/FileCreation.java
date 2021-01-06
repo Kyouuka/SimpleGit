@@ -14,6 +14,9 @@ public class FileCreation {
         if(file.isDirectory()) {
             throw new IOException(filename + " already exists, and it's not a file.");
         }
+        if(file.exists()) {
+            throw new IOException(filename + " already exists!");
+        }
         FileWriter fileWriter = new FileWriter(file);
         fileWriter.write(text);
         fileWriter.close();

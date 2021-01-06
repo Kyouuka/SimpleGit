@@ -100,6 +100,20 @@ public class Branch {
     }
 
     /**
+     * Get the commit history of the current branch, limit the number of records.
+     */
+    public void getCommitHistory(int number) throws Exception {
+        new Commit(commitId).logCommitHistory(number);
+    }
+
+    /**
+     * Get the commit history of the current branch after a commit.
+     */
+    public void getCommitHistory(String commitId) throws Exception {
+        new Commit(this.commitId).logCommitHistory(commitId);
+    }
+
+    /**
      * Reset the branch to a certain commit.
      * @param commitId
      * @throws IOException

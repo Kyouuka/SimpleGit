@@ -79,6 +79,18 @@ public class Tree extends GitObject{
             }
         }
     }
+    public String findFile(String filename) throws IOException {
+        ArrayList<String> list = FileReader.readByBufferReader(value);
+        for(int i = 0; i < list.size(); i++){
+
+            if(FileReader.readObjectFmt(list.get(i)).equals("blob")
+                    && FileReader.readObjectFileName(list.get(i)).equals(filename)){
+                Blob blob = new Blob(FileReader.readObjectKey(list.get(i)));
+                return blob.value;
+            }
+        }
+        return null;
+    }
     /**
      * sort the files in a certain order.
      * @param fs
@@ -114,13 +126,13 @@ public class Tree extends GitObject{
                 Tree tree = new Tree(fs[i]);
                 treeList.add(tree);
                 tree.compressWrite();
-                value += "040000 tree " + tree.genKey(fs[i]) + "\u0020" + fs[i].getName() + "\n";
+                value += "040000 tree " + tree.getKey() + "\u0020" + fs[i].getName() + "\n";
             }
             else if(fs[i].isFile()){
                 Blob blob = new Blob(fs[i]);
                 treeList.add(blob);
                 blob.compressWrite();
-                value += "100644 blob " + blob.genKey(fs[i]) + "\u0020" + fs[i].getName() + "\n";
+                value += "100644 blob " + blob.getKey() + "\u0020" + fs[i].getName() + "\n";
 
             }
         }

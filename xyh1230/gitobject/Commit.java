@@ -21,7 +21,7 @@ public class Commit extends GitObject{
     public String getCommitter(){return committer;}
     public String getMessage(){return message;}
 
-    public Commit(){}
+
     /**
      * Constructor
      * @param
@@ -57,17 +57,21 @@ public class Commit extends GitObject{
         key = commitId;
         String path = Repository.getGitDir() + File.separator + "objects";
         File file = new File(path + File.separator + commitId);
+        //System.out.println(new GitObject().getValue(file));
         if(file.isFile()){
-
+            //System.out.println("This is a file");
             FileInputStream is = new FileInputStream(file);
             byte[] output = ZLibUtils.decompress(is);
             is.close();
             value = new String(output);
+            //System.out.println(value);
             tree = FileReader.readCommitTree(value);
             parent = FileReader.readCommitParent(value);
             author = FileReader.readCommitAuthor(value);
             committer = FileReader.readCommitter(value);
             message = FileReader.readCommitMsg(value);
+        }else{
+            //System.out.println("This is not a file");
         }
     }
     /**
@@ -122,6 +126,38 @@ public class Commit extends GitObject{
             Commit commit = new Commit(parentId);
             System.out.println(commit.getValue());
             parentId = commit.getParent();
+        }
+    }
+
+    /**
+     * Use the linked list to get the history of the current commit history, limit the number of history records.
+     * @throws IOException
+     */
+    public void logCommitHistory(int number) throws IOException{
+        int time = 1;
+        System.out.println(getValue());
+        String parentId = getParent();
+        while(parentId != null & time < number){
+            Commit commit = new Commit(parentId);
+            System.out.println(commit.getValue());
+            parentId = commit.getParent();
+            time ++;
+        }
+    }
+
+    /**
+     * Use the linked list to get the history of the current commit history， show history after a commit.
+     * @throws IOException
+     */
+    public void logCommitHistory(String topCommitId) throws IOException{
+        System.out.println(getValue());
+        if (getKey().equals(topCommitId)){return;}
+        String parentId = getParent();
+        while(parentId != null){
+            Commit commit = new Commit(parentId);
+            System.out.println(commit.getValue());
+            parentId = commit.getParent();
+            if(commit.getKey().equals(topCommitId)){break;}
         }
     }
 }
